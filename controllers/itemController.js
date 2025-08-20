@@ -1,12 +1,12 @@
 import shortid from 'shortid';
 import Item from '../models/Item.js';
 
-exports.createItem = async (req, res) => {
-  const { code, price, quantity } = req.body;
+export const createItem = async (req, res) => {
+  const { name, price, quantity } = req.body;
   try {
     const item = new Item({
       id: shortid.generate(),
-      code,
+      name,
       price,
       quantity,
     });
@@ -19,7 +19,7 @@ exports.createItem = async (req, res) => {
   }
 };
 
-exports.getItems = async (req, res) => {
+export const getItems = async (req, res) => {
   try {
     const items = await Item.find();
     res.json(items);
@@ -30,10 +30,13 @@ exports.getItems = async (req, res) => {
   }
 };
 
-exports.updateItem = async (req, res) => {
+export const updateItem = async (req, res) => {
   try {
     const item = await Item.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
-    if (!item) return res.status(404).json({ msg: 'Not found' });
+    if (!item) 
+        return res.status(404).json({
+             msg: 'Not found' 
+        });
     res.json(item);
   } catch (err) {
     res.status(500).json({ 
@@ -42,12 +45,13 @@ exports.updateItem = async (req, res) => {
   }
 };
 
-exports.deleteItem = async (req, res) => {
+export const deleteItem = async (req, res) => {
   try {
     const item = await Item.findOneAndDelete({ id: req.params.id });
-    if (!item) return res.status(404).json({ 
-        msg: 'Not found' 
-    });
+    if (!item) 
+        return res.status(404).json({ 
+            msg: 'Not found' 
+        });
     res.json({ 
         msg: 'Deleted' 
     });

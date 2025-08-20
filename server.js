@@ -2,6 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import authRouter from './routes/authRouter.js';
+import customerRouter from './routes/customerRouter.js';
+import itemRouter from './routes/itemRouter.js';
+import orderRouter from './routes/orderRouter.js';
 
 dotenv.config();
 
@@ -17,12 +21,16 @@ mongoose.connect(process.env.MONGO_URI)
     );
 
 
+app.use('/api/auth', authRouter);
+app.use('/api/customers', customerRouter);
+app.use('/api/items', itemRouter);
+app.use('/api/orders', orderRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(
     PORT, () => 
         console.log(`Server running on port ${PORT}`)
-    );
+);
 
 
 

@@ -4,9 +4,9 @@ import auth from '../middleware/auth.js';
 
 const itemRouter = express.Router();
 
-router.post('/', auth, createItem);
-router.get('/', auth, getItems);
-router.put('/:id', auth, updateItem);
-router.delete('/:id', auth, deleteItem);
+itemRouter.post('/', auth, createItem);
+itemRouter.get('/', auth, getItems);
+itemRouter.put('/:id', auth, updateItem);
+itemRouter.delete('/:id', auth, deleteItem);
 
 export default itemRouter;

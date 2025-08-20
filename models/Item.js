@@ -7,7 +7,7 @@ const itemSchema = mongoose.Schema(
             required: true, 
             unique: true
         },
-        code: { 
+        name: { 
             type: String, 
             required: true 
         },
