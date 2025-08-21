@@ -7,32 +7,46 @@ export const createOrder = async (req, res) => {
   const { id, customer_id, items } = req.body;
   try {
     if (!id || !id.trim()) {
-      return res.status(400).json({ msg: 'Order ID is required and cannot be empty' });
+      return res.status(400).json({
+         msg: 'Order ID is required and cannot be empty'
+         });
     }
     const existingOrder = await Order.findOne({ id: id.trim() });
     if (existingOrder) {
-      return res.status(400).json({ msg: 'Order ID already exists' });
+      return res.status(400).json({ 
+        msg: 'Order ID already exists' 
+      });
     }
     if (!customer_id || !customer_id.trim()) {
-      return res.status(400).json({ msg: 'Customer ID is required and cannot be empty' });
+      return res.status(400).json({ 
+        msg: 'Customer ID is required and cannot be empty' 
+      });
     }
     const customer = await Customer.findOne({ id: customer_id.trim() });
     if (!customer) {
-      return res.status(400).json({ msg: `Customer with ID ${customer_id} not found` });
+      return res.status(400).json({
+         msg: `Customer with ID ${customer_id} not found` 
+        });
     }
     if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ msg: 'At least one item is required' });
+      return res.status(400).json({ 
+        msg: 'At least one item is required'
+       });
     }
     let total_price = 0;
 
     // Validate items and update stock
     for (const { item_id, quantity } of items) {
       if (!item_id || !quantity || parseInt(quantity) <= 0) {
-        return res.status(400).json({ msg: 'Invalid item or quantity' });
+        return res.status(400).json({
+           msg: 'Invalid item or quantity'
+           });
       }
       const item = await Item.findOne({ id: item_id });
       if (!item || item.quantity < parseInt(quantity)) {
-        return res.status(400).json({ msg: `Invalid item or insufficient quantity for item ID ${item_id}` });
+        return res.status(400).json({
+           msg: `Invalid item or insufficient quantity for item ID ${item_id}`
+           });
       }
       total_price += item.price * parseInt(quantity);
       item.quantity -= parseInt(quantity);
@@ -46,7 +60,7 @@ export const createOrder = async (req, res) => {
       total_price,
     });
     const savedOrder = await order.save();
-    console.log('Saved order at 11:33 AM +0530, 2025-08-21:', savedOrder); // Debug saved data
+    console.log('Saved order at 11:33 AM +0530, 2025-08-21:', savedOrder); 
 
     // Save order items
     const orderItemsToSave = items.map(({ item_id, quantity }) => ({
@@ -58,7 +72,9 @@ export const createOrder = async (req, res) => {
 
     res.json(savedOrder);
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+    res.status(500).json({ 
+      msg: err.message 
+    });
   }
 };
 
@@ -89,14 +105,16 @@ export const getOrders = async (req, res) => {
           customer_name: customer ? customer.name : "Unknown Customer",
           total_price: order.total_price,
           items: itemDetails,
-          createdAt: order.createdAt,  // ✅ will exist now
-          updatedAt: order.updatedAt   // ✅ will exist now
+          createdAt: order.createdAt,  
+          updatedAt: order.updatedAt   
         };
       })
     );
 
     res.json(detailedOrders);
   } catch (err) {
-    res.status(500).json({ msg: err.message });
+    res.status(500).json({ 
+      msg: err.message 
+    });
   }
 };

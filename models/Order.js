@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema(
       required: true 
     }
   },
-  { timestamps: true } // ✅ this adds createdAt & updatedAt automatically
+  { timestamps: true } 
 );
 
 const Order = mongoose.model('Order', orderSchema);

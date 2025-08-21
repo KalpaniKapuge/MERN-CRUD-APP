@@ -35,6 +35,8 @@ export const getOrderHistory = async (req, res) => {
     res.json(orderHistory);
   } catch (err) {
     console.error('Error fetching order history at 12:24 PM +0530, 2025-08-21:', err.message);
-    res.status(500).json({ msg: err.message });
+    res.status(500).json({
+         msg: err.message 
+        });
   }
 };
